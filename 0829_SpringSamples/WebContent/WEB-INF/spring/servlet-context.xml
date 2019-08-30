@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	
+	<!-- 여기는 view가 있는 경로를 알려준다 !!!!  -->
+	
+	
+	
+	<!-- spring MVC annotation(주석문)을 활성화 하기 위한 설정이다
+	@가 붙으면 annotation이라고 생각하면 된다
+	어느 지역으로 이동을 할 때 지시를 해주는 것이다 -->
+	<context:annotation-config/>	
+
+<!--	Tiles를 사용할 때 이렇게 하면 안된다 ! ! !  	
+<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<property name="prefix" value="/WEB-INF/views/"/> 경로
+	<property name="suffix" value=".jsp"/> 확장자
+</bean> 
+-->
+
+
+	<!-- Tiles 설정 -->	
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/views/layouts.xml</value>
+				<!-- Tiles가 있는 곳 어떤 Tiles를 쓸 것인가? -->
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="requestContextAttribute" value="requestContext"/>
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView"/>
+												<!-- 위와 아래 패키지명은 동일하다 -->
+	</bean>
+	
+	<!-- java 공통 패키지 -->
+	<context:component-scan base-package="bit.com.a"/>
+	
+	<!-- ajax 주석문의 사용 허가 --><!-- 2가지를 설정해주어야 ajax를 사용할 수 있음  -->
+	<mvc:annotation-driven/>
+	
+<!-- 지금하는 작업은 View를 등록해주기 위해서다  -->
+<!-- Namespaces 에서 context , mvc 체크  -->
+</beans>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+<!-- 
+   xml: <bean tag: <jsp:useBean
+ -->
+ 
+ 	<!-- aop annotation -->
+ 	<aop:aspectj-autoproxy/>
+ 
+ 
+    <!--aop object 생성 -->
+    <bean id="logApp" class="com.aopex.logAOP"/>
+    <!-- logAOP logApp = new logAOP(); -->
+
+   <!-- AOP 설정(자동 호출 설정) -->
+ <!--   <aop:config>
+      <aop:aspect id="logger" ref="logApp">
+         <aop:pointcut expression="within(com.aopex.*)" id="publicM"/>
+         
+         <aop:around method="loggerAop" pointcut-ref="publicM"/>
+      </aop:aspect>
+   </aop:config> -->
+   
+   <!-- Cat -->
+   <bean id="myCat" class="com.aopex.Cat">
+      <property name="name" value="야옹이"/>
+      <property name="age" value="3"/>
+      <property name="color" value="노랑"/>
+   </bean>
+   
+</beans>

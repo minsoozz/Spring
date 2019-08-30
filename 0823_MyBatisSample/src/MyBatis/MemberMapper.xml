@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="mybatis.MemberMapper">
+
+<insert id="add" parameterType="dto.MemberDto"> <!-- 패키지명이랑 같이 입력해준다 --> 
+	INSERT INTO MEMBERDTO(ID, PWD, EMAIL)
+	VALUES( #{id}, #{pwd}, #{email})
+</insert>
+
+<delete id="remove" parameterType="java.lang.String">
+	DELETE FROM MEMBERDTO
+	WHERE ID = #{id}
+</delete>
+
+<delete id="removeobj" parameterType="dto.MemberDto">
+	DELETE FROM MEMBERDTO
+	WHERE ID = #{id}
+</delete>
+
+<update id="update" parameterType="java.lang.String">
+	UPDATE MEMBERDTO 
+	SET PWD = 'q1w2e3'
+	WHERE PWD = #{pwd}
+</update>
+
+<select id="find" parameterType="java.lang.String" 
+	resultType="dto.MemberDto">
+SELECT * FROM MEMBERDTO
+WHERE ID =#{id}
+</select>	
+
+<select id="allList" resultType="dto.MemberDto">
+	SELECT ID, PWD, EMAIL
+	FROM MEMBERDTO
+</select>
+
+<select id="search" parameterType="dto.BbsParam"
+	resultType="dto.BbsDto">
+	SELECT *
+	FROM BBS
+	WHERE 1=1
+	<if test="s_category == 'title'">
+		AND TITLE LIKE '%'||#{keyword}||'%'
+	</if>
+	<if test="s_category == 'content'">
+		AND TITLE LIKE '%'||#{content}||'%'
+	</if>
+</select>
+</mapper>

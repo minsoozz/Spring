@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="Bbs">
+  
+  	<!-- 게시판 목록 , 검색기능과 같이  -->
+  	<select id="getbbslist" parameterType="bit.com.a.model.BbsOrderDto" resultType="bit.com.a.model.BbsDto">
+		
+		SELECT SEQ, ID, REF, STEP, DEPTH,TITLE, CONTENT, WDATE, PARENT, DEL, READCOUNT  
+		FROM  (SELECT ROW_NUMBER()OVER(ORDER BY REF DESC, STEP ASC) AS RNUM,
+			   SEQ, ID, REF, STEP, DEPTH, 
+			   TITLE, CONTENT, WDATE, PARENT,
+			   DEL, READCOUNT 
+			   FROM BBS 	
+		<if test="keyword != null and searchType != null">
+			<if test="searchType == 'id'">
+				WHERE ID LIKE '%'||#{keyword}||'%' 
+			</if>
+			<if test="searchType == 'title'">
+				WHERE TITLE LIKE '%'||#{keyword}||'%'
+			</if>			
+			<if test="searchType == 'content'">
+				WHERE CONTENT LIKE '%'||#{keyword}||'%'
+			</if>
+		</if>
+		
+		ORDER BY REF DESC, STEP ASC)
+		<![CDATA[
+		WHERE RNUM >=#{startSeq} AND RNUM <=#{endSeq}
+		]]>
+		
+	</select>
+	
+	<select id="getbbscount" parameterType="bit.com.a.model.BbsOrderDto" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM BBS
+		<if test="keyword != null and searchType != null">
+			<if test="searchType == 'id'">
+				WHERE ID LIKE '%'||#{keyword}||'%' 
+			</if>
+			<if test="searchType == 'title'">
+				WHERE TITLE LIKE '%'||#{keyword}||'%'
+			</if>			
+			<if test="searchType == 'content'">
+				WHERE CONTENT LIKE '%'||#{keyword}||'%'
+			</if>
+		</if>
+	</select>
+	
+	<!-- 글쓰기  -->
+	<insert id="writebbs" parameterType="bit.com.a.model.BbsDto">
+		INSERT INTO BBS(SEQ,ID,REF,STEP,DEPTH,TITLE,CONTENT,WDATE,PARENT,DEL,READCOUNT)
+		VALUES(SEQ_BBS.NEXTVAL,#{id},(SELECT NVL(MAX(REF),0)+1 FROM BBS), 0,0,#{title},#{content},SYSDATE,0,0,0)
+	</insert>
+	
+	<!-- 글 디테일 -->
+	<select id="view" parameterType="int" resultType="bit.com.a.model.BbsDto">
+		SELECT * 
+		FROM BBS
+		WHERE SEQ=#{seq}
+	</select>
+	
+	<!-- 글 삭제 -->
+	<delete id="delete" parameterType="int">
+		DELETE
+		FROM BBS
+		WHERE SEQ=#{seq}
+	</delete>
+	
+	<!-- 글 수정 -->
+	<update id="update" parameterType="bit.com.a.model.BbsDto">
+		UPDATE BBS 
+		SET TITLE=#{title} , CONTENT=#{content}
+		WHERE SEQ=#{seq}
+	</update>
+	
+	<!-- 답글 -->
+	<update id="answer" parameterType="int">
+		UPDATE BBS
+		SET STEP = STEP+1
+		WHERE REF=(SELECT REF FROM BBS WHERE SEQ=#{seq})
+		AND STEP>(SELECT STEP FROM BBS WHERE SEQ=#{seq})  	
+	</update>
+	
+	<!-- 답글 작성 -->
+	<insert id="bbsanswerinsert" parameterType="java.util.Map">
+		INSERT INTO BBS 
+					 (SEQ,ID,REF,STEP,DEPTH, 
+					 TITLE,CONTENT,WDATE,PARENT,DEL,READCOUNT) 
+					 VALUES(SEQ_BBS.NEXTVAL,#{id}, 
+					  (SELECT REF FROM BBS WHERE SEQ=#{seq}),	
+					  (SELECT STEP FROM BBS WHERE SEQ=#{seq}) + 1, 
+					  (SELECT DEPTH FROM BBS WHERE SEQ=#{seq}) + 1, 
+					#{title},#{content},SYSDATE,#{seq},0,0)
+	</insert>
+  </mapper>

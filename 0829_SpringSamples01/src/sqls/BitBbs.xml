@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Bbs">
+   <!-- 패키지 명까지 같이 -->
+   <select id="getBbsList" parameterType="bit.com.a.model.BbsParam" 
+      resultType="bit.com.a.model.BbsDto">
+      SELECT SEQ, ID, REF, STEP, DEPTH, 
+                   TITLE, CONTENT, WDATE, PARENT, 
+                   DEL, READCOUNT 
+      FROM (SELECT ROW_NUMBER()OVER(ORDER BY REF DESC, STEP ASC)AS RNUM,
+            SEQ, ID, REF, STEP, DEPTH, TITLE, 
+            CONTENT, WDATE, PARENT,DEL, READCOUNT
+            FROM BBS
+            WHERE 1=1
+            <if test="s_category != null and s_category != ''
+               and s_keyword != null and s_keyword != ''">
+            
+            <if test="s_category == 'title'">
+               AND TITLE LIKE '%'||#{s_keyword}||'%'
+            </if>
+            <if test="s_category == 'contents'">
+               AND CONTENT LIKE '%'||#{s_keyword}||'%'
+            </if>
+            <if test="s_category == 'writer'">
+               AND ID LIKE '%'||#{s_keyword}||'%'
+            </if>
+            
+            </if>
+            ) A
+      WHERE RNUM BETWEEN ${start} AND ${end}      
+   ORDER BY REF DESC, STEP ASC
+   </select>
+   
+   <select id="getBbsCount" parameterType="bit.com.a.model.BbsParam"
+      resultType="java.lang.Integer">
+   
+   SELECT NVL(COUNT(*), 0) AS CNT
+   FROM BBS 
+   WHERE 1=1
+      <if test="s_category != null and s_keyword != null">
+               
+         <if test="s_category == 'title'">
+            AND TITLE LIKE '%'||#{s_keyword}||'%'
+         </if>
+         <if test="s_category == 'content'">
+            AND CONTENT LIKE '%'||#{s_keyword}||'%'
+         </if>
+         <if test="s_category == 'writer'">
+            AND ID LIKE '%'||#{s_keyword}||'%'
+         </if>
+      </if>
+   
+   </select>
+   
+   	<!-- 글쓰기  -->
+	<insert id="writebbs" parameterType="bit.com.a.model.BbsParam">
+		INSERT INTO BBS(SEQ,ID,REF,STEP,DEPTH,TITLE,CONTENT,WDATE,PARENT,DEL,READCOUNT)
+		<!-- VALUES(SEQ_BBS.NEXTVAL,#{id},(SELECT NVL(MAX(REF),0)+1 AS REF FROM BBS), 0,0,#{title},#{content},SYSDATE,0,0,0) -->
+		VALUES(SEQ_BBS.NEXTVAL, #{id}, (SELECT NVL(MAX(REF),0)+1 AS REF FROM BBS) , 0,0,#{title},#{content},SYSDATE,0,0,0)
+	</insert>
+	
+	<!-- 글 디테일 -->
+	<select id="view" parameterType="int" resultType="bit.com.a.model.BbsDto">
+		SELECT * 
+		FROM BBS
+		WHERE SEQ=#{seq}
+	</select>
+	
+</mapper>
+
+<!-- 숫자는 ${} 를 사용한다  -->
+

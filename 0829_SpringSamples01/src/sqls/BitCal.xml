@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Cal">
+<select id="getCalendar" parameterType="java.util.Map" resultType="bit.com.a.model.CalendarDto">
+SELECT SEQ, ID,TITLE, CONTENT, RDATE, WDATE  
+  FROM (SELECT ROW_NUMBER() OVER(PARTITION BY SUBSTR(RDATE, 1, 8) ORDER BY RDATE ASC) RNUM, 
+        SEQ, ID, TITLE, CONTENT, RDATE, WDATE 
+        FROM CALENDAR 
+        WHERE ID=#{id} AND SUBSTR(RDATE, 1, 6)=#{String} ) 
+        WHERE RNUM BETWEEN 1 AND 5 
+</select>
+
+</mapper>
+

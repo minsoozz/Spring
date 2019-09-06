@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+  
+<tiles-definitions>
+
+<definition name="login.tiles" template="/WEB-INF/views/login/login.jsp">
+</definition> 
+
+<definition name="regi.tiles" template="/WEB-INF/views/login/regi.jsp">
+</definition> 
+
+<definition name="bbslist.tiles" template="/WEB-INF/views/layouts-tiles.jsp">
+   <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"></put-attribute>
+   <put-attribute name="top_inc" value="/WEB-INF/views/common/top_inc.jsp"></put-attribute>
+   <put-attribute name="top_menu" value="/WEB-INF/views/common/top_menu.jsp"></put-attribute>
+   <put-attribute name="left_menu" value="/WEB-INF/views/bbs/left_bbslist.jsp"></put-attribute>
+   <put-attribute name="main" value="/WEB-INF/views/bbs/bbslist.jsp"></put-attribute>
+   <put-attribute name="bottom_inc" value="/WEB-INF/views/common/bottom_inc.jsp"></put-attribute>
+</definition> 
+
+
+<definition name="bbswrite.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/bbs/bbswrite.jsp"></put-attribute>
+</definition>
+
+<definition name="bbsdetail.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/bbs/bbsdetail.jsp"></put-attribute>
+</definition>
+
+
+<definition name="calendar.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/calendar/calendar.jsp"></put-attribute>
+</definition>
+
+<definition name="pdslist.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/pds/pdslist.jsp"></put-attribute>
+</definition>
+
+
+<definition name="pdswrite.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/pds/pdswrite.jsp"></put-attribute>
+</definition>
+
+<definition name="pdsdetail.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/pds/pdsdetail.jsp"></put-attribute>
+</definition>
+
+
+<definition name="pdsupdate.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/pds/pdsupdate.jsp"></put-attribute>
+</definition>
+
+<definition name="polllist.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/poll/polllist.jsp"></put-attribute>
+</definition>
+
+<definition name="pollmake.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/poll/pollmake.jsp"></put-attribute>
+	   <put-attribute name="left_menu" value="/WEB-INF/views/poll/left_polllist.jsp"></put-attribute>
+</definition> 
+
+<definition name="polldetail.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/poll/polldetail.jsp"></put-attribute>
+</definition>
+
+<definition name="pollresult.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/poll/pollresult.jsp"></put-attribute>
+</definition>
+
+
+<definition name="cahtting.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/webchat/chatting.jsp"></put-attribute>
+</definition>
+
+
+<definition name="yutube.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/you/youlist.jsp"></put-attribute>
+	   <put-attribute name="left_menu" value="/WEB-INF/views/you/left_youlist.jsp"></put-attribute>
+</definition>
+
+<definition name="youtubelist.tiles" extends="bbslist.tiles">
+	   <put-attribute name="main" value="/WEB-INF/views/you/youtubelist.jsp"></put-attribute>
+	   <put-attribute name="left_menu" value="/WEB-INF/views/you/left_youlist.jsp"></put-attribute>
+</definition>
+
+</tiles-definitions>  

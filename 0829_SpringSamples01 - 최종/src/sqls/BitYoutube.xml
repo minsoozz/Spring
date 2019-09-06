@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Youtube">
+<insert id="writeYoutube" parameterType="bit.com.a.model.YoutubeSave">
+INSERT INTO YOUTUBE(SEQ,VNAME,ID,TITLE,CATEGORY,WDATE)
+VALUES(SEQ_YOUTUBE.NEXTVAL,#{vname},#{id},#{title},#{category},SYSDATE)
+</insert>
+
+<select id="getYoutube" parameterType="bit.com.a.model.YoutubeSave"
+	resultType="bit.com.a.model.YoutubeSave">
+SELECT SEQ,VNAME,ID,TITLE,CATEGORY,WDATE
+FROM YOUTUBE
+WHERE ID=#{id} AND VNAME=#{vname}
+</select>
+
+<select id="getYoutubeList" parameterType="bit.com.a.model.YoutubeSave"
+	resultType="bit.com.a.model.YoutubeSave">
+SELECT SEQ,VNAME,ID,TITLE,CATEGORY,WDATE
+FROM YOUTUBE
+WHERE ID=#{id}
+ORDER BY WDATE DESC
+
+</select>
+
+</mapper>

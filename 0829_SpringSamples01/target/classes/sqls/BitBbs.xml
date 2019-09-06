@@ -40,6 +40,7 @@
    SELECT NVL(COUNT(*), 0) AS CNT
    FROM BBS 
    WHERE 1=1
+   
       <if test="s_category != null and s_keyword != null">
                
          <if test="s_category == 'title'">

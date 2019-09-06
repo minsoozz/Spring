@@ -32,11 +32,7 @@ public class BitBbsController {
 		
 		// 글의 총 수 
 		int totalRecordCount = bbsService.getBbsCount(param);
-		
-		System.out.println("검색 조건 : " + param.getS_category());
-		System.out.println("검색어 : " + param.getS_keyword());
-		System.out.println("글의 총 개수 : "  + totalRecordCount);
-		System.out.println("PageNumber : " + param.getPageNumber());
+	 
 		
 		
 		// pageNumber 취득
@@ -97,6 +93,12 @@ public class BitBbsController {
 		System.out.println("controller dto : "  + dto.toString());
 		
 		return "bbsdetail.tiles";
+	}
+	
+	@RequestMapping(value = "chatting.do", method = RequestMethod.GET)
+	public String chatting() throws Exception{
+		
+		return "cahtting.tiles"; 
 	}
 	
 
